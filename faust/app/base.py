@@ -624,6 +624,10 @@ class App(AppT, Service):
         # This init is called by the `faust worker` command.
         for fixup in self.fixups:
             fixup.on_worker_init()
+
+    def worker_init_post_autodiscover(self) -> None:
+        """Init worker after autodiscover."""
+        self.web.init_server()
         self.on_worker_init.send()
 
     def discover(self,
@@ -670,9 +674,10 @@ class App(AppT, Service):
         """Execute the :program:`faust` umbrella command using this app."""
         from faust.cli.faust import cli
         self.finalize()
+        self.worker_init()
         if self.conf.autodiscover:
             self.discover()
-        self.worker_init()
+        self.worker_init_post_autodiscover()
         cli(app=self)
         raise SystemExit(3451)  # for mypy: NoReturn
 
