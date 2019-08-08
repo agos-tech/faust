@@ -30,23 +30,21 @@ def test_maxlen():
 
 
 def test_NaN():
-    with pytest.raises(ValueError):
-        str_to_decimal('NaN')
+    assert str_to_decimal('NaN').is_nan()
 
 
 def test_Inf():
-    with pytest.raises(ValueError):
-        str_to_decimal('Inf')
+    assert str_to_decimal('Inf').is_infinite()
 
 
 def test_negative_Inf():
-    with pytest.raises(ValueError):
-        str_to_decimal('-Inf')
+    value = str_to_decimal('-Inf')
+    assert value.is_infinite()
+    assert value.is_signed()
 
 
 def test_sNaN():
-    with pytest.raises(ValueError):
-        str_to_decimal('sNaN')
+    assert str_to_decimal('sNaN').is_snan()
 
 
 class Flags(enum.Enum):

@@ -61,8 +61,7 @@ def str_to_decimal(s: str, maxlen: int = DECIMAL_MAXLEN) -> Optional[Decimal]:
         maxlen (int): Max length of string.  Default is 100.
 
     Raises:
-        ValueError: if length exceeds maximum length, or if value is not
-            a valid number (e.g. Inf, NaN or sNaN).
+        ValueError: if length exceeds maximum length.
 
     Returns:
         Decimal: Converted number.
@@ -72,10 +71,7 @@ def str_to_decimal(s: str, maxlen: int = DECIMAL_MAXLEN) -> Optional[Decimal]:
     if len(s) > maxlen:
         raise ValueError(
             f'string of length {len(s)} is longer than limit ({maxlen})')
-    v = Decimal(s)
-    if not v.is_finite():  # check for Inf/NaN/sNaN/qNaN
-        raise ValueError(f'Illegal value in decimal: {s!r}')
-    return v
+    return Decimal(s)
 
 
 class JSONEncoder(json.JSONEncoder):
